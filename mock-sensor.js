@@ -1,6 +1,6 @@
 var bleno = require("bleno");
-
-process.env.BLENO_ADVERTISING_INTERVAL = 1000;
+var sleep = require("sleep");
+//process.env.BLENO_ADVERTISING_INTERVAL = 1000;
 
 function getCurrentDateTime() {
   return new Date().toLocaleString("en-US", {timeZone: "America/New_York"});
@@ -21,11 +21,11 @@ bleno.on('advertisingStartError', function(error) {
 
 function handleBlenoStateChange(state) {
   if (state === 'poweredOn') {
-    while(true) {
-      startAdvertising();  
-      bleno.stopAdvertising();
-    }
-    
+	while(true) {
+      		startAdvertising();
+     	 	bleno.stopAdvertising();
+		sleep.msleep(500);
+    	}
   } else if (state === 'poweredOff') {
     bleno.stopAdvertising();
   } else {
