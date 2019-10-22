@@ -1,12 +1,12 @@
 // given a sensor-id and a source-ip-address, listens to mqtt on that ip address and records the time that the packets were received
 const mqtt = require('mqtt')
 
-sourceIP = "172.27.45.221";
+sourceIP = sys.argv[2];
 
 const client = mqtt.connect(`mqtt://${sourceIP}`)
 
 client.on('connect', () => {
-  client.subscribe('gateway-data')
+  client.subscribe('mock-sensor-data')
 });
 
 client.on('message', (topic, message) => {
@@ -14,7 +14,7 @@ client.on('message', (topic, message) => {
     data = JSON.parse(message.toString());
 
     //record the time of receiving the sensor data
-    receiveTime = new Date().getTime();
+    receiveTime = Date.now();
     packetTs = parseInt(data.split("#")[1]);
     latency = receiveTime - packetTs;
     console.log(`${packetTs}\t${latency}`);

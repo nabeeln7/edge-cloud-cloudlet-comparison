@@ -44,7 +44,7 @@ Packet format:
 https://www.libelium.com/forum/libelium_files/bt4_core_spec_adv_data_reference.pdf
 */
 function startAdvertising() {  
-  const currentTs = new Date().getTime();
+  const currentTs = Date.now();
   const sensorId = "mock-sensor";
   const payload = `${sensorId}#${currentTs}`;
 

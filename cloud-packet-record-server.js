@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.get('/record', function(req,res){
 	var packetTs = req.query["packetTs"];
-	var receiveTime = new Date().getTime();
+	var receiveTime = Date.now();
 	var latency = receiveTime - packetTs;
 
 	console.log(`${packetTs}\t${latency}`);

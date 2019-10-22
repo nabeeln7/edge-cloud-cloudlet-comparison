@@ -5,8 +5,6 @@ var request = require('request');
 var MQTT_TOPIC_NAME = 'mock-sensor-data';
 var mqtt_client = mqtt.connect('mqtt://localhost');
 
-cloudIP = "198.199.83.16";
-cloudPort = 5000;
 cloudletIP = "172.27.44.129";
 cloudletPort = 5000;
 
@@ -38,7 +36,7 @@ function handleDiscoveredPeripheral(peripheral) {
         // console.log(`[BLE Radio] Received advertisement data = ${data}`);
         
         //record the time of receiving the sensor data
-        receiveTime = new Date().getTime();
+        receiveTime = Date.now();
         packetTs = parseInt(data.split("#")[1]);
         latency = receiveTime - packetTs;
         console.log(`${packetTs}\t${latency}`);
