@@ -1,7 +1,7 @@
 // given a sensor-id and a source-ip-address, listens to mqtt on that ip address and records the time that the packets were received
 const mqtt = require('mqtt')
 
-sourceIP = sys.argv[2];
+sourceIP = process.argv[2];
 
 const client = mqtt.connect(`mqtt://${sourceIP}`)
 
