@@ -70,10 +70,10 @@ mqtt_client.on('connect', function () {
     noble.on('stateChange', handleNobleStateChange);
     noble.on('discover', handleDiscoveredPeripheral);
 
-    client.subscribe(ACK_MQTT_TOPIC_NAME);
+    mqtt_client.subscribe(ACK_MQTT_TOPIC_NAME);
 });
 
-client.on('message', (topic, message) => {
+mqtt_client.on('message', (topic, message) => {
   if(topic === ACK_MQTT_TOPIC_NAME) {
     data = JSON.parse(message.toString());
 
