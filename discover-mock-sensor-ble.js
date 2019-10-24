@@ -32,11 +32,11 @@ function handleNobleStateChange(state) {
   }
 }
 
-function sendToServer(ipAdrr, port, label) {
+function sendToServer(packetTs, ipAdrr, port, label) {
   var cloudStartTime = Date.now();
-  request.get(`http://${ipAdrr}:${port}/record?packetTs=1234`, function (error, response, body) {
+  request.get(`http://${ipAdrr}:${port}/record?packetTs=${packetTs}`, function (error, response, body) {
     var cloudEndTime = Date.now();
-    console.log(`${label} latency = ${cloudEndTime - cloudStartTime}`);
+    console.log(`${label}\t${packetTs}\t${cloudEndTime - cloudStartTime}`);
   });
 }
 
@@ -49,11 +49,11 @@ function handleDiscoveredPeripheral(peripheral) {
       var data = localName.toString('utf8');
       if (data.startsWith('mock-sensor')) {
         // console.log(`[BLE Radio] Received advertisement data = ${data}`);
+        packetTs = parseInt(data.split("#")[1]);
         
-        sendToServer(cloudIP, cloudPort, "cloud")
-        sendToServer(cloudletIP, cloudletPort, "cloudlet")
+        sendToServer(packetTs, cloudIP, cloudPort, "cloud");
+        sendToServer(packetTs, cloudletIP, cloudletPort, "cloudlet");
         
-
         //publish packet in mqtt topic
         receiveTime = Date.now();
         mqtt_client.publish(MQTT_TOPIC_NAME, JSON.stringify(data));
@@ -83,7 +83,7 @@ mqtt_client.on('message', (topic, message) => {
     
     receiveTime = pendingACKPackets[packetTs]
     latency = ackReceiveTime - receiveTime;
-    console.log(`mqtt ack received for ${packetTs} latency = ${latency}`);
+    console.log(`mqtt\t${packetTs}\t${latency}`);
 
     delete pendingACKPackets[packetTs]
   }
